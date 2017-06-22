@@ -1,0 +1,23 @@
+- name: NGINX | Installing NGINX repo rpm
+  yum:
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+ 
+- name: NGINX | Installing NGINX
+  yum:
+    name: nginx
+    state: latest
+ 
+- name: NGINX | Starting NGINX
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+- name: NGINX | Adding http service to Firewall
+  command: /bin/firewall-cmd --permanent --zone=public --add-service=http
+- name: NGINX | Reloading Firewall
+  command: /bin/firewall-cmd --reload
+- name: NGINX | Copy index.html
+  copy:
+    src: ../files/index.html
+    dest: /usr/share/nginx/html/
+    mode: 0644
