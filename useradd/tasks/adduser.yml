@@ -1,0 +1,15 @@
+- name: Adding new user
+  user:
+    name: campus17
+    comment: "Campus Party 2017"
+    shell: /bin/bash
+    group: wheel
+- name: Adding SSH Keys
+  authorized_key:
+    user: campus17
+    state: present
+    key: "{{ lookup('file', '../files/authorized_keys') }}" 
+- name: Restarting SSH demon
+  service:
+    name: sshd
+    state: restarted
